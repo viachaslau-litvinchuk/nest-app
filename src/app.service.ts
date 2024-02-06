@@ -23,27 +23,31 @@ export class AppService {
   }
 
  async  getSpacesUsers(spaces: string[]): Promise<SpaceUsers[]> {
-const currentTimestamp = new Date(Date.now()).toISOString();
+    try {
+        const currentTimestamp = new Date(Date.now()).toISOString();
 
-  const spacesUsers = await Promise.all(
-    spaces.map(async (space) => {
-        const { stdout } = await exec(`datasphere spaces users read --space ${space} --accept application/vnd.sap.datasphere.space.users.list+json`);
-        const users = JSON.parse(stdout);
-        const spaceUsers = [];
+        const spacesUsers = await Promise.all(
+        spaces.map(async (space) => {
+            const { stdout } = await exec(`datasphere spaces users read --space ${space} --accept application/vnd.sap.datasphere.space.users.list+json`);
+            const users = JSON.parse(stdout);
+            const spaceUsers = [];
 
-        for (const user of users) {
-            spaceUsers.push({
-                space: space,
-                user: user,
-                updatedAt: currentTimestamp,
-            });
-        }
+            for (const user of users) {
+                spaceUsers.push({
+                    space: space,
+                    user: user,
+                    updatedAt: currentTimestamp,
+                });
+            }
 
-        return spaceUsers;
-    })
+            return spaceUsers;
+        })
   );
 
   return spacesUsers.flat();
+    } catch(err) {
+        Logger.error(`Error: ${err}`);
+    }
  }
 
  async getUserRoles(): Promise<UserRoles[]> {
