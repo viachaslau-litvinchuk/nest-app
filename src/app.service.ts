@@ -23,6 +23,8 @@ export class AppService {
   }
 
  async  getSpacesUsers(spaces: string[]): Promise<SpaceUsers[]> {
+const currentTimestamp = new Date(Date.now()).toISOString();
+
   const spacesUsers = await Promise.all(
     spaces.map(async (space) => {
         const { stdout } = await exec(`datasphere spaces users read --space ${space} --accept application/vnd.sap.datasphere.space.users.list+json`);
@@ -32,7 +34,8 @@ export class AppService {
         for (const user of users) {
             spaceUsers.push({
                 space: space,
-                user: user
+                user: user,
+                updatedAt: currentTimestamp,
             });
         }
 
@@ -45,6 +48,8 @@ export class AppService {
 
  async getUserRoles(): Promise<UserRoles[]> {
     try {
+        const currentTimestamp = new Date(Date.now()).toISOString();
+
         const { stdout } = await exec(`datasphere users list --accept application/vnd.sap.datasphere.space.users.details+json`);
       
         const userRolesFull = JSON.parse(stdout);
@@ -57,7 +62,8 @@ export class AppService {
                 userRoles.push(
                     {
                         user: userData.userName,
-                        role
+                        role,
+                        updatedAt: currentTimestamp
                     }
                 )
             }
