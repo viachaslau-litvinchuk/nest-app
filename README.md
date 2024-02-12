@@ -4,6 +4,7 @@
 Application to generate csv file with data about users, roles and spaces from SAP Datasphere
 
 ## Prerequsits
+- Install [Git SCM](https://git-scm.com/downloads)
 - Install [Node.js >=18.10.0](https://nodejs.org/en/download)
 - Install [SAP Datasphere cli >=2023.25.0](https://www.npmjs.com/package/@sap/datasphere-cli)
 - [Create OAuth2.0 Clients to Authenticate Against SAP Datasphere](https://help.sap.com/docs/SAP_DATASPHERE/935116dd7c324355803d4b85809cec97/3f92b46fe0314e8ba60720e409c219fc.html?state=DRAFT&version=DEV_CURRENT)
