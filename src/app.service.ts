@@ -3,6 +3,7 @@ import { promisify } from 'util';
 import { exec as execNonPromise } from 'child_process';
 import { SpaceUsers, UserRoles } from './app.model';
 import { createObjectCsvWriter } from 'csv-writer';
+import { promises as fs } from 'fs';
 
 const exec = promisify(execNonPromise);
 
@@ -81,13 +82,20 @@ export class AppService {
 
   async createCsv<T>(data: T[], name: string): Promise<void> {
     const header = [];
+    const dirPath = './downloads';
+
+    try {
+      await fs.access(dirPath);
+    } catch (e) {
+      await fs.mkdir(dirPath);
+    }
 
     for (const key in data[0]) {
       header.push({ id: key, title: key.toUpperCase() });
     }
 
     const cvsWriter = createObjectCsvWriter({
-      path: `./downloads/${name}.csv`,
+      path: `${dirPath}/${name}.csv`,
       header,
     });
 
