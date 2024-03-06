@@ -28,6 +28,7 @@ export class AppService {
           const { stdout } = await exec(
             `datasphere spaces users read --space ${space} --accept application/vnd.sap.datasphere.space.users.list+json`,
           );
+
           const users = JSON.parse(stdout);
           const spaceUsers = [];
 
